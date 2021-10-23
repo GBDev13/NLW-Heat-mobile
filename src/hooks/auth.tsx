@@ -53,7 +53,10 @@ function AuthProvider({ children }: AuthProviderProps) {
       const authSessionResponse = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse;
 
       if (authSessionResponse.type === 'success' && authSessionResponse.params.error !== 'access_denied') {
-        const authResponse = await api.post("authenticate", { code: authSessionResponse.params.code });
+        const authResponse = await api.post("authenticate", {
+          code: authSessionResponse.params.code,
+          platform: 'mobile'
+        });
         const { user, token } = authResponse.data as AuthResponse;
 
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
